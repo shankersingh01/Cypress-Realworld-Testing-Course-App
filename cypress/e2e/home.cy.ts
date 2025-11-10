@@ -1,35 +1,43 @@
+import HomePage from '../support/pages/HomePage';
+
+
 describe('home page', () => {
   beforeEach( () => {
-    cy.visit('http://localhost:3000')
+    HomePage.visit()
   })
 
   context("Hero Section", () => {
     it('the h1 contains the correct text', () => {
-      cy.getByData('hero-heading').contains('Testing Next.js Applications with Cypress')
+      HomePage.expectHeroHeadingText("Testing Next.js Applications with Cypress")
     }),
 
     it('the features on the homepage are correct', () => {
       // cy.get("dt").eq(0).contains(/4 courses/i) regex way
-      cy.get("dt").eq(0).contains("4 Courses")
-      cy.get("dt").eq(1).contains("25+ Lessons")
-      cy.get("dt").eq(2).contains("Free and Open Source")
+      HomePage.expectFeatureText(0, "4 Courses")
+      HomePage.expectFeatureText(1, "25+ Lessons")
+      HomePage.expectFeatureText(2, "Free and Open Source")
+      // cy.get("dt").eq(1).contains("25+ Lessons")
+      // cy.get("dt").eq(2).contains("Free and Open Source")
     })
   })
 
   context("Courses section", () => {
     it("Course: Testing Your First Next.js Application", () => {
-      cy.getByData('course-0').find("a").contains("Get started").click()
-      cy.location("pathname").should("equal", "/testing-your-first-application")
+      HomePage.openCourse(0).assertPath("/testing-your-first-application")
+      // cy.getByData('course-0').find("a").contains("Get started").click()
+      // cy.location("pathname").should("equal", "/testing-your-first-application")
     })
 
     it("Course: Testing Foundations", () => {
-      cy.getByData('course-1').find("a").contains("Get started").click()
-      cy.location("pathname").should("equal", "/testing-foundations")
+      HomePage.openCourse(1).assertPath("/testing-foundations")
+      // cy.getByData('course-1').find("a").contains("Get started").click()
+      // cy.location("pathname").should("equal", "/testing-foundations")
     })
 
-    it.only("Cypress Fundamentals", () => {
-      cy.getByData('course-2').find("a").contains("Get started").click()
-      cy.location("pathname").should("equal", "/cypress-fundamentals")
+    it("Cypress Fundamentals", () => {
+      HomePage.openCourse(2).assertPath("/cypress-fundamentals")
+      // cy.getByData('course-2').find("a").contains("Get started").click()
+      // cy.location("pathname").should("equal", "/cypress-fundamentals")
     })
   })
 })
